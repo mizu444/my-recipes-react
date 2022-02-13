@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Header } from "./components/Header";
+import { Recipes } from "./components/Recipes";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [recipes, setRecipes] = useState([])
+
+  async function fetchRecipes() {
+    const response = await fetch("http://localhost:8080/recipes/index.php");
+    const data = await response.json();
+    setRecipes(data.recipes)
+  }
+
+  useEffect(() => {
+    document.title = "My Recipes";
+  });
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main">
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Recipes searchTerm={searchTerm} recipes={recipes} />
     </div>
   );
 }

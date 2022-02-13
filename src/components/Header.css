@@ -1,0 +1,48 @@
+.header {
+    text-align: center;
+    position: relative;
+  }
+  
+  h1 {
+    font-size: 64px;
+    font-weight: bold;
+    margin: 20px 0 30px;
+    padding: 15px 0;
+  }
+  
+  .add-new-btn {
+    background-color: rgb(248, 248, 222);
+    cursor: pointer;
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    font-size: 12px;
+    padding: 6px;
+    font-family: inherit;
+    font-weight: bold;
+    border: 2px solid #000;
+    border-radius: 6px;
+    transform: translateX(-50%);
+    outline: none;
+  }
+  
+  .add-new-btn:hover {
+    color: rgb(192, 57, 57);
+    border: 2px solid rgb(192, 57, 57);
+  }
+  
+  .add-new-btn:active {
+    transform: translateX(-50%) scale(0.98);
+  }
+  
+  .search {
+    background-color: rgb(248, 248, 222);
+    font-family: inherit;
+    width: 50%;
+    min-width: 300px;
+    font-size: 16px;
+    padding: 8px 10px;
+    border: 2px solid rgb(233, 223, 82);
+    border-radius: 8px;
+    outline: none;
+  }

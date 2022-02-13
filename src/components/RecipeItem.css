@@ -1,0 +1,42 @@
+.recipes-container .recipe {
+    position: relative;
+    margin: 10px 10px;
+    border: 1px solid rgb(233, 223, 82);
+    border-radius: 10px;
+    padding: 0 15px;
+    height: 300px;
+    width: 300px;
+    overflow: hidden;
+  }
+  
+  .recipes-container .recipe .title {
+    cursor: pointer;
+    text-align: center;
+    font-size: 24px;
+    text-decoration: underline;
+  }
+  
+  .recipes-container .recipe img {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    height: 60%;
+    width: 60%;
+    object-fit: cover;
+    border-radius: 10px;
+    transform: translateX(-50%);
+  }
+  
+  .recipes-container .recipe .delete {
+    position: absolute;
+    cursor: pointer;
+    bottom: 10px;
+    right: 30px;
+  }
+  
+  .recipes-container .recipe .edit {
+    position: absolute;
+    cursor: pointer;
+    bottom: 10px;
+    right: 10px;
+  }
