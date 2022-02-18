@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="main">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Recipes searchTerm={searchTerm} recipes={recipes} />
+      <Recipes searchTerm={searchTerm} recipes={recipes} onDelete={fetchRecipes}/>
     </div>
   );
 }

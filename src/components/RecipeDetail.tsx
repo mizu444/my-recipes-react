@@ -27,6 +27,7 @@ export const RecipeDetail = ({ modalIsOpen, closeModal, recipe }) => {
       >
         &times;
       </span>
+      
       <h3 className="title" id="modalTitle">
         {recipe.title}
       </h3>
