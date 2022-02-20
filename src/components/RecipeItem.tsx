@@ -1,7 +1,7 @@
 import { faTrashAlt, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./RecipeItem.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { RecipeDetail } from "./RecipeDetail";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
