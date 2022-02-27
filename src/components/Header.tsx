@@ -4,7 +4,7 @@ import { AddNewRecipe } from "./AddNewRecipe";
 
 Modal.setAppElement("#root");
 
-export const Header = ({ searchTerm, setSearchTerm, recipes }) => {
+export const Header = ({ searchTerm, setSearchTerm }) => {
   return (
     <header className="header">
       <h1>My Recipes</h1>

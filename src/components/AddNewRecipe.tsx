@@ -9,11 +9,12 @@ export const AddNewRecipe = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [errorClass, setErrorClass] = useState({
     title: false,
+    ingredients: false,
     directions: false,
   });
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [ingredients, setIngredients] = useState(["banana", "nutella"]);
+  const [ingredients, setIngredients] = useState([""]);
   const [directions, setDirections] = useState("");
 
   function openModal() {
@@ -22,24 +23,37 @@ export const AddNewRecipe = () => {
 
   function closeModal() {
     setIsOpen(false);
+    setTitle("");
+    setImage("");
+    setIngredients([""]);
+    setDirections("");
+    setErrorClass({ title: false, ingredients: false, directions: false });
   }
 
-  function submitRecipe(e) {
+  function submitRecipe() {
     const errors = {
       title: false,
+      ingredients: false,
       directions: false,
     };
     // e.preventDefault();
 
     if (title.length === 0) {
       errors.title = true;
-
-      console.log("vypln nazov more", errorClass);
     }
 
     if (directions.length === 0) {
       errors.directions = true;
-      console.log("chyba postup", errorClass);
+    }
+
+    // odfiltrovat prazdne ingrediencie
+    const filteredArray = ingredients
+      .map((ingredient) => ingredient.trim())
+      .filter((ingredient) => !!ingredient);
+
+    // zistit, ci po filtri je dlzka > 1, ak nie zobraz error, na server posli len vyplnene policka
+    if (filteredArray.length < 1) {
+      errors.ingredients = true;
     }
 
     setErrorClass(errors);
@@ -101,17 +115,18 @@ export const AddNewRecipe = () => {
             {ingredients.map((ingredient, index) => {
               return (
                 <div className="ingredient-container" key={index}>
-                  {ingredients.length > 1 &&<span
-                    className="remove-ingredient"
-                    onClick={() => {
-                        const updatedArray = [...ingredients]
-                        updatedArray.splice(index, 1)
-                     setIngredients(updatedArray)
-                    }
-                    }
-                  >
-                    <FontAwesomeIcon icon={faTimes} />
-                  </span>}
+                  {ingredients.length > 1 && (
+                    <span
+                      className="remove-ingredient"
+                      onClick={() => {
+                        const updatedArray = [...ingredients];
+                        updatedArray.splice(index, 1);
+                        setIngredients(updatedArray);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faTimes} />
+                    </span>
+                  )}
                   <input
                     value={ingredient}
                     onChange={(e) => {
@@ -120,7 +135,10 @@ export const AddNewRecipe = () => {
                       setIngredients([...ingredients]);
                     }}
                     type="text"
-                    className="input ingredients"
+                    className={
+                      "input ingredients" +
+                      (errorClass.ingredients ? " error" : "")
+                    }
                     placeholder="Enter ingredient"
                   />
                   {index === ingredients.length - 1 && (
@@ -148,7 +166,13 @@ export const AddNewRecipe = () => {
           <button type="submit" className="submit-btn" onClick={submitRecipe}>
             Submit
           </button>
-          <div className="error-message" id="error-message"></div>
+          {(errorClass.title ||
+            errorClass.directions ||
+            errorClass.ingredients) && (
+            <div className="error-message" id="error-message">
+              ta vypln sicko co mas!
+            </div>
+          )}
         </div>
       </Modal>
     </div>
