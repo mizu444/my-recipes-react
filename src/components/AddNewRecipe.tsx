@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Modal from "react-modal";
 
+const apiHost = process.env.REACT_APP_API_HOST;
 Modal.setAppElement("#root");
 
 export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
@@ -30,7 +31,7 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
     setErrorClass({ title: false, ingredients: false, directions: false });
   }
 
-  function submitRecipe() {
+  async function submitRecipe() {
     const errors = {
       title: false,
       ingredients: false,
@@ -57,6 +58,12 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
       errors.ingredients = true;
     }
 
+    setErrorClass(errors);
+
+    if (errorClass.title || errorClass.directions || errorClass.ingredients) {
+      return;
+    }
+
     const newRecipe = {
       title,
       ingredients: filteredIngredients,
@@ -64,26 +71,24 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
       image,
     };
 
-    fetch("http://localhost:8080/recipes/index.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: new URLSearchParams(newRecipe),
-    }).then((response) => {
+    try {
+      const response = await fetch(`${apiHost}/recipes/index.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: new URLSearchParams(newRecipe),
+      });
       if (!response.ok) {
         throw "Nastala chyba, skuste znova neskor.";
       }
       closeModal();
       onSubmitNewRecipe();
-    })
-    // .catch((error) => {
-    //   alert(error);
-    // });
+    } catch (error) {
+      alert(error);
+    }
 
     //----------- TODO - ak title uz existuje, vyhod chybu ----------//
-
-    setErrorClass(errors);
   }
 
   return (

@@ -6,6 +6,8 @@ import { RecipeDetail } from "./RecipeDetail";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
+const apiHost = process.env.REACT_APP_API_HOST;
+
 export const RecipeItem = ({ recipe, onDelete }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -17,24 +19,23 @@ export const RecipeItem = ({ recipe, onDelete }) => {
     setIsOpen(false);
   }
 
-  function deleteRecipe() {
-    fetch("http://localhost:8080/recipes/index.php", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: new URLSearchParams({ title: recipe.title }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw "Nastala chyba, skuste znova neskor.";
-        }
-        closeModal();
-        onDelete()
-      })
-      .catch((error) => {
-        alert(error);
+  async function deleteRecipe() {
+    try {
+      const response = await fetch(`${apiHost}/recipes/index.php`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: new URLSearchParams({ title: recipe.title }),
       });
+      if (!response.ok) {
+        throw "Nastala chyba, skuste znova neskor.";
+      }
+      closeModal();
+      onDelete();
+    } catch (error) {
+      alert(error);
+    }
   }
 
   return (
