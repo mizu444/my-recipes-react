@@ -3,12 +3,15 @@ import "./App.css";
 import { Header } from "./components/Header";
 import { Recipes } from "./components/Recipes";
 
+const apiHost = process.env.REACT_APP_API_HOST
+
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [recipes, setRecipes] = useState([])
-
+  
+  
   async function fetchRecipes() {
-    const response = await fetch("http://localhost:8080/recipes/index.php");
+    const response = await fetch(`${apiHost}/recipes/index.php`);
     const data = await response.json();
     setRecipes(data.recipes)
   }
@@ -23,7 +26,7 @@ function App() {
 
   return (
     <div className="main">
-      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSubmitNewRecipe={fetchRecipes}/>
       <Recipes searchTerm={searchTerm} recipes={recipes} onDelete={fetchRecipes}/>
     </div>
   );
