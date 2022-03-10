@@ -5,7 +5,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-export const AddNewRecipe = () => {
+export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [errorClass, setErrorClass] = useState({
     title: false,
@@ -47,14 +47,41 @@ export const AddNewRecipe = () => {
     }
 
     // odfiltrovat prazdne ingrediencie
-    const filteredArray = ingredients
+    const filteredIngredients = ingredients
       .map((ingredient) => ingredient.trim())
-      .filter((ingredient) => !!ingredient);
+      .filter((ingredient) => !!ingredient)
+      .toString();
 
     // zistit, ci po filtri je dlzka > 1, ak nie zobraz error, na server posli len vyplnene policka
-    if (filteredArray.length < 1) {
+    if (filteredIngredients.length < 1) {
       errors.ingredients = true;
     }
+
+    const newRecipe = {
+      title,
+      ingredients: filteredIngredients,
+      directions,
+      image,
+    };
+
+    fetch("http://localhost:8080/recipes/index.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: new URLSearchParams(newRecipe),
+    }).then((response) => {
+      if (!response.ok) {
+        throw "Nastala chyba, skuste znova neskor.";
+      }
+      closeModal();
+      onSubmitNewRecipe();
+    })
+    // .catch((error) => {
+    //   alert(error);
+    // });
+
+    //----------- TODO - ak title uz existuje, vyhod chybu ----------//
 
     setErrorClass(errors);
   }
