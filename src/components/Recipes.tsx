@@ -1,7 +1,7 @@
 import "./Recipes.css";
 import { RecipeItem } from "./RecipeItem";
 
-export const Recipes = ({searchTerm, recipes, onDelete}) => {
+export const Recipes = ({searchTerm, recipes, fetchRecipes}) => {
     const filteredRecipes = recipes.filter(recipe => {
         return recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
     })
@@ -9,7 +9,7 @@ export const Recipes = ({searchTerm, recipes, onDelete}) => {
   return (
     <div className="recipes-container">
       {filteredRecipes.map((recipe, index) => {
-        return <RecipeItem key={index} recipe={recipe} onDelete={onDelete}/>;
+        return <RecipeItem key={index} recipe={recipe} fetchRecipes={fetchRecipes}/>;
       })}
     </div>
   );

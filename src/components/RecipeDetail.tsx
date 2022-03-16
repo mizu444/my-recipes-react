@@ -2,11 +2,11 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-export const RecipeDetail = ({ modalIsOpen, closeModal, recipe }) => {
+export const RecipeDetail = ({ recipeDetailIsOpen, closeRecipeDetail, recipe }) => {
   return (
     <Modal
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
+      isOpen={recipeDetailIsOpen}
+      onRequestClose={closeRecipeDetail}
       style={{
         content: {
           backgroundColor: "rgb(243, 237, 182)",
@@ -23,7 +23,7 @@ export const RecipeDetail = ({ modalIsOpen, closeModal, recipe }) => {
       <span
         className="close-modal-btn"
         id="close-modal-btn"
-        onClick={closeModal}
+        onClick={closeRecipeDetail}
       >
         &times;
       </span>

@@ -1,37 +1,29 @@
-import { faPlusCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 import Modal from "react-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 const apiHost = process.env.REACT_APP_API_HOST;
 Modal.setAppElement("#root");
 
-export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+export const EditRecipe = ({
+  editFormIsOpen,
+  closeEditForm,
+  recipe,
+  fetchRecipes,
+}) => {
   const [errorClass, setErrorClass] = useState({
     title: false,
     ingredients: false,
     directions: false,
   });
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [ingredients, setIngredients] = useState([""]);
-  const [directions, setDirections] = useState("");
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-    setTitle("");
-    setImage("");
-    setIngredients([""]);
-    setDirections("");
-    setErrorClass({ title: false, ingredients: false, directions: false });
-  }
+  const [title, setTitle] = useState(recipe.title);
+  const [image, setImage] = useState(recipe.image);
+  const [ingredients, setIngredients] = useState(recipe.ingredients);
+  const [directions, setDirections] = useState(recipe.directions);
 
   async function submitRecipe() {
+      console.log(recipe)
     const errors = {
       title: false,
       ingredients: false,
@@ -63,7 +55,8 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
       return;
     }
 
-    const newRecipe = {
+    const editedRecipe = {
+      originalTitle: recipe.title,
       title,
       ingredients: filteredIngredients,
       directions,
@@ -72,17 +65,17 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
 
     try {
       const response = await fetch(`${apiHost}/recipes/index.php`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
         },
-        body: new URLSearchParams(newRecipe),
+        body: new URLSearchParams({...editedRecipe}),
       });
       if (!response.ok) {
         throw "Nastala chyba, skuste znova neskor.";
       }
-      closeModal();
-      onSubmitNewRecipe();
+      fetchRecipes();
+      closeEditForm();
     } catch (error) {
       alert(error);
     }
@@ -90,16 +83,9 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
 
   return (
     <div>
-      <button className="add-new-btn" id="add-new-btn" onClick={openModal}>
-        Add New
-        <FontAwesomeIcon
-          icon={faPlusCircle}
-          style={{ fontSize: "14px", marginLeft: "6px" }}
-        />
-      </button>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={editFormIsOpen}
+        onRequestClose={closeEditForm}
         style={{
           content: {
             backgroundColor: "rgb(243, 237, 182)",
@@ -116,13 +102,13 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
         <span
           className="close-modal-btn"
           id="close-modal-btn"
-          onClick={closeModal}
+          onClick={closeEditForm}
         >
           &times;
         </span>
 
         <div className="modal-content">
-          <h3>Create new recipe</h3>
+          <h3>Edit recipe</h3>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}

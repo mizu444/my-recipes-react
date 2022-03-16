@@ -5,18 +5,28 @@ import { useState } from "react";
 import { RecipeDetail } from "./RecipeDetail";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { EditRecipe } from "./EditRecipe";
 
 const apiHost = process.env.REACT_APP_API_HOST;
 
-export const RecipeItem = ({ recipe, onDelete }) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+export const RecipeItem = ({ recipe, fetchRecipes }) => {
+  const [recipeDetailIsOpen, setRecipeDetailIsOpen] = useState(false);
+  const [editFormIsOpen, setEditFormIsOpen] = useState(false);
 
-  function openModal() {
-    setIsOpen(true);
+  function openRecipeDetail() {
+    setRecipeDetailIsOpen(true);
   }
 
-  function closeModal() {
-    setIsOpen(false);
+  function closeRecipeDetail() {
+    setRecipeDetailIsOpen(false);
+  }
+
+  function openEditForm() {
+    setEditFormIsOpen(true);
+  }
+
+  function closeEditForm() {
+    setEditFormIsOpen(false);
   }
 
   async function deleteRecipe() {
@@ -31,8 +41,8 @@ export const RecipeItem = ({ recipe, onDelete }) => {
       if (!response.ok) {
         throw "Nastala chyba, skuste znova neskor.";
       }
-      closeModal();
-      onDelete();
+      closeRecipeDetail();
+      fetchRecipes();
     } catch (error) {
       alert(error);
     }
@@ -40,7 +50,7 @@ export const RecipeItem = ({ recipe, onDelete }) => {
 
   return (
     <div className="recipe">
-      <h3 className="title" onClick={openModal}>
+      <h3 className="title" onClick={openRecipeDetail}>
         {recipe.title}
       </h3>
       <img src={recipe.image} />
@@ -57,16 +67,26 @@ export const RecipeItem = ({ recipe, onDelete }) => {
               },
               {
                 label: "No",
-                onClick: closeModal,
+                onClick: closeRecipeDetail,
               },
             ],
           });
         }}
       />
-      <FontAwesomeIcon icon={faPencilAlt} className="edit" />
+      <FontAwesomeIcon
+        icon={faPencilAlt}
+        className="edit"
+        onClick={openEditForm}
+      />
+      <EditRecipe
+        editFormIsOpen={editFormIsOpen}
+        closeEditForm={closeEditForm}
+        recipe={recipe}
+        fetchRecipes={fetchRecipes}
+      />
       <RecipeDetail
-        modalIsOpen={modalIsOpen}
-        closeModal={closeModal}
+        recipeDetailIsOpen={recipeDetailIsOpen}
+        closeRecipeDetail={closeRecipeDetail}
         recipe={recipe}
       />
     </div>

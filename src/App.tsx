@@ -27,7 +27,7 @@ function App() {
   return (
     <div className="main">
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} onSubmitNewRecipe={fetchRecipes}/>
-      <Recipes searchTerm={searchTerm} recipes={recipes} onDelete={fetchRecipes}/>
+      <Recipes searchTerm={searchTerm} recipes={recipes} fetchRecipes={fetchRecipes}/>
     </div>
   );
 }
