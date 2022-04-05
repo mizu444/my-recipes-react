@@ -31,7 +31,7 @@ export const RecipeItem = ({ recipe, fetchRecipes }) => {
 
   async function deleteRecipe() {
     try {
-      const response = await fetch(`${apiHost}/recipes/index.php`, {
+      const response = await fetch(`${apiHost}/recipe/${recipe.id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",

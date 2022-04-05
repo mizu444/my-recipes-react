@@ -71,7 +71,7 @@ export const AddNewRecipe = ({ onSubmitNewRecipe }) => {
     };
 
     try {
-      const response = await fetch(`${apiHost}/recipes/index.php`, {
+      const response = await fetch(`${apiHost}/recipes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",

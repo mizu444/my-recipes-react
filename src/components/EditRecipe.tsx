@@ -56,7 +56,6 @@ export const EditRecipe = ({
     }
 
     const editedRecipe = {
-      originalTitle: recipe.title,
       title,
       ingredients: filteredIngredients,
       directions,
@@ -64,7 +63,7 @@ export const EditRecipe = ({
     };
 
     try {
-      const response = await fetch(`${apiHost}/recipes/index.php`, {
+      const response = await fetch(`${apiHost}/recipe/${recipe.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",

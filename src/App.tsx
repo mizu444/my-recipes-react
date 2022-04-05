@@ -11,7 +11,7 @@ function App() {
   
   
   async function fetchRecipes() {
-    const response = await fetch(`${apiHost}/recipes/index.php`);
+    const response = await fetch(`${apiHost}/recipes`);
     const data = await response.json();
     setRecipes(data.recipes)
   }
