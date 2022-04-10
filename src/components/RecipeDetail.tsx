@@ -2,7 +2,11 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-export const RecipeDetail = ({ recipeDetailIsOpen, closeRecipeDetail, recipe }) => {
+export const RecipeDetail = ({
+  recipeDetailIsOpen,
+  closeRecipeDetail,
+  recipe,
+}) => {
   return (
     <Modal
       isOpen={recipeDetailIsOpen}
@@ -27,12 +31,12 @@ export const RecipeDetail = ({ recipeDetailIsOpen, closeRecipeDetail, recipe }) 
       >
         &times;
       </span>
-      
+
       <h3 className="title" id="modalTitle">
         {recipe.title}
       </h3>
       <div className="ingredients">
-        <span>Ingredients:</span>
+        <span>Ingrediencie:</span>
         <ul id="modalIngredients">
           {recipe.ingredients.map((ingredient, index) => {
             return <li key={index}>{ingredient}</li>;
